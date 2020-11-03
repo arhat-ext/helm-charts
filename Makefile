@@ -17,12 +17,5 @@ include scripts/lint.mk
 NAMESPACE ?= default
 export NAMESPACE
 
-gen.calico:
-	sh scripts/helm.sh $@
-
-gen.calico-node:
-	sh scripts/helm.sh $@
-
-gen.all: \
-	gen.calico \
-	gen.calico-node
+gen.all:
+	:
