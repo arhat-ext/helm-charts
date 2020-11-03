@@ -1,0 +1,58 @@
+name: CI
+
+# yamllint disable-line rule:truthy
+on:
+  check_run:
+    types:
+    - rerequested
+    - requested_action
+  pull_request:
+    branches:
+    - master
+  push:
+    branches:
+    - master
+    tags:
+    - v*
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Lint
+      run: |
+        make lint.all
+
+    - name: Install helm
+      uses: azure/setup-helm@v1
+      with:
+        version: latest
+
+    - name: Test Gerneration
+      run: |
+        make gen.all
+
+  release:
+    runs-on: ubuntu-latest
+    if: contains(github.head_ref, 'deps/') == false
+    needs:
+    - check
+    steps:
+    - uses: actions/checkout@v2
+    - name: Fetch history
+      run: git fetch --prune --unshallow
+
+    - name: Configure git
+      run: |
+        git config --global user.email '72795724+arhatbot@users.noreply.github.com'
+        git config --global user.name 'Arhat Bot'
+
+    - name: Run chart-releaser
+      uses: helm/chart-releaser-action@v1.0.0
+      with:
+        charts_dir: charts
+        charts_repo_url: https://helm-charts.arhat.dev
+
+      env:
+        CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}

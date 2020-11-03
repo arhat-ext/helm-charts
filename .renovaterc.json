@@ -1,0 +1,45 @@
+{
+  "extends": ["github>arhat-dev/renovate-presets:general"],
+  "dependencyDashboardHeader": "This issue tracks dependency version upgrades",
+  "enabledManagers": ["helmv3", "helm-values", "regex"],
+  "regexManagers": [
+    {
+      "fileMatch": ["charts/.+?/values\\.yaml$"],
+      "matchStrings": [
+        "image:\\s+repo: (?<repoName>.*?)\\s+tag: (?<currentValue>.*?)\\s"
+      ],
+      "depNameTemplate": "{{{repoName}}}",
+      "lookupNameTemplate": "{{{repoName}}}",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["(^|/)Chart.yaml$"],
+      "matchStrings": [
+        "# docker-image: (?<dockerImage>.*?)\\s+appVersion: (?<currentValue>.*?)\\s"
+      ],
+      "depNameTemplate": "{{dockerImage}}",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["(^|/)README.md$"],
+      "matchStrings": [
+        "\\s+|\\s+image.repo\\s+|\\s+string\\s+|\\s+`(?<dockerImage>.*?)`\\s+|\\s+|\\s+.*\\s+|\\s+image.tag\\s+|\\s+string\\s+|\\s+`(?<currentValue>.*?)`\\s+|\\s+|\\s+"
+      ],
+      "depNameTemplate": "{{dockerImage}}",
+      "datasourceTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "managers": ["helmv3"],
+      "datasources": ["helm"],
+      "draftPR": true
+    },
+    {
+      "managers": ["helm-values"],
+      "datasources": ["docker"],
+      "draftPR": true
+    }
+  ]
+}
