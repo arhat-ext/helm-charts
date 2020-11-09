@@ -26,6 +26,32 @@ entries:
     urls:
     - https://github.com/arhat-ext/helm-charts/releases/download/runtime-docker-0.1.0/runtime-docker-0.1.0.tgz
     version: 0.1.0
+  runtime-podman:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2020-11-09T16:05:42.346740315Z"
+    description: Template repo for arhat extension
+    digest: f6c4a4b7578dbdda190c9180e61549a28e9468a6c3a14bc36b96fb3f0e345740
+    home: https://github.com/arhat-ext/runtime-podman
+    keywords:
+    - arhat
+    - extension
+    - peripheral
+    - controller
+    - libext
+    - golang
+    - iot
+    maintainers:
+    - email: dev@arhat.dev
+      name: arhat-ext
+    name: runtime-podman
+    sources:
+    - https://github.com/arhat-ext/runtime-podman
+    - https://github.com/arhat-ext/helm-charts
+    type: application
+    urls:
+    - https://github.com/arhat-ext/helm-charts/releases/download/runtime-podman-0.1.0/runtime-podman-0.1.0.tgz
+    version: 0.1.0
   template-go:
   - apiVersion: v2
     appVersion: latest
